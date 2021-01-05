@@ -1,9 +1,35 @@
 import pygame
-import level
-from pygame.locals import *
-from definitions import *
+
+import definitions
 import tareklevel
+import initialization as level1
 pygame.init()
+# Buttons
+class Button():
+    def __init__(self, posX, posY, imgPath, imgscale,*function):
+        self.image = pygame.image.load(imgPath)
+        self.scale = imgscale
+        self.image = pygame.transform.scale(self.image,(int(self.image.get_width()*self.scale),int(self.image.get_height()*self.scale)))
+        self.rect = self.image.get_rect()
+        self.posXN = posX-self.image.get_width()/2
+        self.posYN = posY-self.image.get_height()/2
+        self.rect.x = self.posXN
+        self.rect.y = self.posYN
+        self.function = function
+
+    def update(self):
+        if self.posXN+self.image.get_width()>pygame.mouse.get_pos()[0]>self.posXN:
+            if self.posYN+self.image.get_height()>pygame.mouse.get_pos()[1]>self.posYN:
+                print("good lord")
+                s = pygame.Surface((self.rect.width, self.rect.height))  # the size of your rect
+                s.set_alpha(128)  # alpha level
+                s.fill((255, 255, 255))  # this fills the entire surface
+                definitions.screen.blit(s, (self.posXN, self.posYN))  # (0,0) are the top-left coordinates
+                if pygame.mouse.get_pressed(3)[0]:
+                    definitions.screen.blit(definitions.bg,(0,0))
+                    for function in self.function:
+                        exec(function)
+
 class SelectScreen():
     def __init__(self,*button,scale):
         self.scale=scale
@@ -14,9 +40,9 @@ class SelectScreen():
     def update(self):
         for button in self.buttons:
             button.update()
-    def draw(self,vertical,PosX=screeninfo.screenWidth,PosY=screeninfo.screenHeight):
+    def draw(self,vertical,PosX=definitions.screeninfo.screenWidth,PosY=definitions.screeninfo.screenHeight):
         global drawn
-        screen.blit(bg,(0,0))
+        definitions.screen.blit(definitions.bg,(0,0))
         counter=0
         pygame.image.load(self.buttonsnames[0][0])
         startposXDraw =PosX //2- (pygame.image.load(self.buttonsnames[0][0]).get_width() * len(self.buttonsnames) * self.scale) // 2
@@ -28,34 +54,36 @@ class SelectScreen():
             for button in self.buttonsnames:
                 x=Button(startposXDrawn,startposYDraw+pygame.image.load(button[0]).get_height()*self.scale*counter+counter*50*self.scale,button[0],1/2,button[1])
                 self.buttons.append(x)
-                screen.blit(x.image, (x.posXN,x.posYN))
+                definitions.screen.blit(x.image, (x.posXN,x.posYN))
                 counter=counter+1
         else:
             for button in self.buttonsnames:
                 x=Button(startposXDraw+ pygame.image.load(button[0]).get_width() * counter*self.scale+counter*50*self.scale, startposYDrawn,button[0],1/2,button[1])
-                screen.blit(x.image, (x.posXN,x.posYN))
+                definitions.screen.blit(x.image, (x.posXN,x.posYN))
                 self.buttons.append(x)
                 counter=counter+1
         drawn=True
 
-screen.blit(bg, (0, 0))
+definitions.screen.blit(definitions.bg, (0, 0))
 
 
-Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "tareklevel.run(main_menu,game_over,world,score,level,world_data)"]
-Level5 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
+
+startButton = Button(definitions.startPosX, definitions.startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2, "levels.draw(False)")
+Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
+Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
+Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
+Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "tareklevel.run(tareklevel.main_menu,tareklevel.game_over,tareklevel.world,tareklevel.score,tareklevel.level,tareklevel.world_data)"]
+Level5 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
 levels = SelectScreen(Level1, Level2, Level3, Level4, Level5, scale=1/2)
-startButton = Button(startPosX, startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2, "levels.draw(False)")
+
 drawn=False
 runs=True
 while runs:
-    clock.tick(5)
-    screen.blit(bg, (0, 0))
+    definitions.clock.tick(5)
+    definitions.screen.blit(definitions.bg, (0, 0))
     if not drawn:
         print(drawn)
-        screen.blit(startButton.image, (startPosX-startButton.image.get_width()/2,startPosY-startButton.image.get_height()/2))
+        definitions.screen.blit(startButton.image, (definitions.startPosX-startButton.image.get_width()/2,definitions.startPosY-startButton.image.get_height()/2))
         startButton.update()
         if startButton.posXN + startButton.image.get_width() > pygame.mouse.get_pos()[0] > startButton.posXN:
             if startButton.posYN + startButton.image.get_height() > pygame.mouse.get_pos()[1] > startButton.posYN:

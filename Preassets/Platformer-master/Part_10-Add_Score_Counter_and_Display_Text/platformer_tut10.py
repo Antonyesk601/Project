@@ -1,7 +1,7 @@
-import pygame
-from pygame.locals import *
 import pickle
 from os import path
+
+import pygame
 
 pygame.init()
 

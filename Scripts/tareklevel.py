@@ -1,9 +1,12 @@
-import pygame, sys, random, time
-from pygame.locals import *
-from pygame import mixer
 import pickle
-from os import path #to check whether the file exsists in the first place to avoid error
+from os import path  # to check whether the file exsists in the first place to avoid error
+
+import pygame
+from pygame import mixer
+from pygame.locals import *
+
 import definitions
+
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
 pygame.init()
@@ -35,8 +38,7 @@ red = (255,0,0)
 moon_glow = ((235,245,255))
 
 # Screen
-screen = pygame.display.set_mode((screen_width,screen_height))
-pygame.display.set_caption("A wizard`s tale")
+screen = definitions.screen
 
 # load images
 bkg_img = pygame.image.load("level 4 images/level 4 intro.jpg")
@@ -82,11 +84,11 @@ def reset_level(level,world_data):
 
 # Buttons
 
-slime_group = pygame.sprite.Group()
-platform_group = pygame.sprite.Group()
-lava_group = pygame.sprite.Group()
-coin_group = pygame.sprite.Group()
-exit_group = pygame.sprite.Group()
+slime_group = definitions.slime_group
+platform_group = definitions.platform_group
+lava_group = definitions.lava_group
+coin_group = definitions.coin_group
+exit_group = definitions.exit_group
 
 #create dummy coin for showing the score
 score_coin =  definitions.Coin(tile_size // 2, tile_size // 2)
@@ -112,12 +114,10 @@ def run(main_menu,game_over,world,score,level,world_data):
     run = True
     while run:
         clock.tick(fps) #adjust framerate
-
         # Drawing
         screen.blit(bkg,(0,0)) # Background
         draw_text("Level 4", font_intro2, blue, (screen_width // 2) - 80, 30)
         draw_text("BOSS BATTLE", font_intro2, moon_glow, (screen_width // 2) - 200, screen_height - 200)
-
         if main_menu == True:
             if exit_button.draw():
                 run = False
@@ -140,11 +140,7 @@ def run(main_menu,game_over,world,score,level,world_data):
 
             game_over = player.update(game_over,world)
 
-            slime_group.draw(screen)
-            platform_group.draw(screen)
-            lava_group.draw(screen)
-            coin_group.draw(screen)
-            exit_group.draw(screen)
+
 
             #if player has died
             if game_over == -1:
@@ -161,6 +157,11 @@ def run(main_menu,game_over,world,score,level,world_data):
         for event in pygame.event.get():
             if event.type == QUIT:
                 run = False
+        slime_group.draw(screen)
+        platform_group.draw(screen)
+        lava_group.draw(screen)
+        coin_group.draw(screen)
+        exit_group.draw(screen)
 
         pygame.display.update()
 

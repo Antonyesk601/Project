@@ -1,10 +1,8 @@
-import pygame, sys, random, time
+import pickle  # module for importing level files
+from os import path  # to check whether the file exsists in the first place to avoid error
+
+import pygame
 from pygame.locals import *
-from pygame import mixer
-import pickle #module for importing level files
-from os import path #to check whether the file exsists in the first place to avoid error
-
-
 
 
 # game loop

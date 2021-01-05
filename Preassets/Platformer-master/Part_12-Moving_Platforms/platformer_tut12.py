@@ -1,8 +1,8 @@
-import pygame
-from pygame.locals import *
-from pygame import mixer
 import pickle
 from os import path
+
+import pygame
+from pygame import mixer
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
