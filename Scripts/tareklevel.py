@@ -1,7 +1,7 @@
 import pygame, sys, random, time
 from pygame.locals import *
 from pygame import mixer
-import pickle #module for importing level files
+import pickle
 from os import path #to check whether the file exsists in the first place to avoid error
 import definitions
 pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -39,22 +39,22 @@ screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("A wizard`s tale")
 
 # load images
-bkg_img = pygame.image.load("level 4 images/level 4 intro.jpg")
+bkg_img = pygame.image.load("../level 4 images/level 4 intro.jpg")
 bkg = pygame.transform.scale(bkg_img, (screen_width,screen_height))
-bg_img = pygame.image.load("level 4 images/NightForest/Forestgrey.png") # Background
+bg_img = pygame.image.load("../level 4 images/NightForest/Forestgrey.png") # Background
 bg = pygame.transform.scale(bg_img,(screen_width,screen_height)) #fix background scale
-restart_img = pygame.image.load("level 4 images/restart_btn.png")
-start_img = pygame.image.load("level 4 images/start_btn.png")
-exitbtn_img = pygame.image.load("level 4 images/exit_btn.png")
+restart_img = pygame.image.load("../level 4 images/restart_btn.png")
+start_img = pygame.image.load("../level 4 images/start_btn.png")
+exitbtn_img = pygame.image.load("../level 4 images/exit_btn.png")
 
 #load sounds
-pygame.mixer.music.load("level 4 sounds/level 4 original.mp3")
+pygame.mixer.music.load("../level 4 sounds/level 4 original.mp3")
 pygame.mixer.music.play(-1, 0.0, 3000)
 pygame.mixer.music.set_volume(0.2)
-coin_fx = pygame.mixer.Sound("level 4 sounds/coin.mp3")
-jump_fx = pygame.mixer.Sound("level 4 sounds/jump.mp3")
+coin_fx = pygame.mixer.Sound("../level 4 sounds/coin.mp3")
+jump_fx = pygame.mixer.Sound("../level 4 sounds/jump.mp3")
 jump_fx.set_volume(0.5) #halves the original volume
-game_over_fx = pygame.mixer.Sound("level 4 sounds/game_over.mp3")
+game_over_fx = pygame.mixer.Sound("../level 4 sounds/game_over.mp3")
 
 
 def draw_text(text, font, text_col, x, y):
@@ -95,8 +95,8 @@ coin_group.add(score_coin)
 
 
 #load in level data and create world
-if path.exists(f"level{level}_data"):
-    pickle_in = open(f"level{level}_data", "rb") #open file and read binary to process whatever info is in this file
+if path.exists(f"../level{level}_data"):
+    pickle_in = open(f"../level{level}_data", "rb") #open file and read binary to process whatever info is in this file
     world_data = pickle.load(pickle_in)
 world =definitions.World(world_data) #(runs once outside game loop)
 
@@ -107,7 +107,7 @@ player = definitions.Player(screen_width - 50, screen_height - 170)
 restart_button = definitions.TuTButton(screen_width // 2 - 50, screen_height // 2 + 100, restart_img)
 start_button = definitions.TuTButton(screen_width // 2 - 350, screen_height // 2, start_img)
 exit_button = definitions.TuTButton(screen_width // 2 + 150, screen_height // 2, exitbtn_img)
-def run():
+def run(main_menu,game_over,world,score):
     # game loop
     run = True
     while run:
@@ -138,7 +138,7 @@ def run():
                     score += 1
                 draw_text("X " + str(score), font_score, white, tile_size - 10, 10)
 
-            game_over = player.update(game_over)
+            game_over = player.update(game_over,world)
 
             slime_group.draw(screen)
             platform_group.draw(screen)

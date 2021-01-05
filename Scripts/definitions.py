@@ -38,20 +38,16 @@ font_intro2 = pygame.font.SysFont("Snap ITC", 55)
 # pygame.display.set_caption("A wizard`s tale")
 #
 # # load images
-bkg_img = pygame.image.load("level 4 images/level 4 intro.jpg")
-bkg = pygame.transform.scale(bkg_img, (screen_width,screen_height))
-bg_img = pygame.image.load("level 4 images/NightForest/Forestgrey.png") # Background
-bg = pygame.transform.scale(bg_img,(screen_width,screen_height)) #fix background scale
 
 #
 # #load sounds
-pygame.mixer.music.load("level 4 sounds/level 4 original.mp3")
+pygame.mixer.music.load("../level 4 sounds/level 4 original.mp3")
 pygame.mixer.music.play(-1, 0.0, 3000)
 pygame.mixer.music.set_volume(0.2)
-coin_fx = pygame.mixer.Sound("level 4 sounds/coin.mp3")
-jump_fx = pygame.mixer.Sound("level 4 sounds/jump.mp3")
+coin_fx = pygame.mixer.Sound("../level 4 sounds/coin.mp3")
+jump_fx = pygame.mixer.Sound("../level 4 sounds/jump.mp3")
 jump_fx.set_volume(0.5) #halves the original volume
-game_over_fx = pygame.mixer.Sound("level 4 sounds/game_over.mp3")
+game_over_fx = pygame.mixer.Sound("../level 4 sounds/game_over.mp3")
 slime_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
@@ -283,11 +279,11 @@ class Player():
         self.index = 0  # index tracking
         self.counter = 0  # controls the speed of animation
         for num in range(20):  # iterate over the pics and rescale then add to list
-            img_right = pygame.image.load("level 4 images/BlueWizard/BlueWizardWalk/wizard%d.png" %num)
+            img_right = pygame.image.load("../level 4 images/BlueWizard/BlueWizardWalk/wizard%d.png" %num)
             img_left = pygame.transform.flip(img_right, True, False)  # True vertically,False horizontally
             self.images_right.append(img_right)
             self.images_left.append(img_left)
-        self.dead_image = pygame.image.load("level 4 images/ghost.png")
+        self.dead_image = pygame.image.load("../level 4 images/ghost.png")
         self.image = self.images_right[self.index]  # images variable which will be displayed using the update function
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -304,9 +300,9 @@ class World():
     def __init__(self,data): #constructor method takes the blueprint as an argument to process it
         self.tile_list = [] #empty list to collect useful data of the world after processing blueprint
         #load images
-        dirt_img = pygame.image.load("level 4 images/dirt.png")
-        grass_img = pygame.image.load("level 4 images/grass.jfif")
-        brick_img = pygame.image.load("level 4 images/brick.jfif")
+        dirt_img = pygame.image.load("../level 4 images/dirt.png")
+        grass_img = pygame.image.load("../level 4 images/grass.jfif")
+        brick_img = pygame.image.load("../level 4 images/brick.jfif")
         #Analyze the blueprint
         row_count = 0   #counter for determining rectangle y-coordinate of each tile
         for row in data:    #looks in a row of blueprint each iteration
@@ -364,7 +360,7 @@ class World():
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("level 4 images/SlimeOrange/slime0.png")
+        self.image = pygame.image.load("../level 4 images/SlimeOrange/slime0.png")
         self.image = pygame.transform.scale(self.image,(62,50))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -384,7 +380,7 @@ class Enemy(pygame.sprite.Sprite):
 class Lava(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load("level 4 images/liquidLavaTop_mid.png")
+        img = pygame.image.load("../level 4 images/liquidLavaTop_mid.png")
         self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -394,7 +390,7 @@ class Lava(pygame.sprite.Sprite):
 class Coin(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load("level 4 images/coin.png")
+        img = pygame.image.load("../level 4 images/coin.png")
         self.image = pygame.transform.scale(img, (tile_size // 2, tile_size // 2))
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -411,8 +407,8 @@ def reset_level(level,player):
     exit_group.empty()
 
     #load in level data and create world
-    if path.exists(f"level{level}_data"):
-        pickle_in = open(f"level{level}_data",
+    if path.exists(f"../level{level}_data"):
+        pickle_in = open(f"../level{level}_data",
                          "rb")  # open file and read binary to process whatever info is in this file
         world_data = pickle.load(pickle_in)
     world = World(world_data)  # (runs once outside game loop)
@@ -423,7 +419,7 @@ def reset_level(level,player):
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, move_x, move_y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load("level 4 images/platform.png")
+        img = pygame.image.load("../level 4 images/platform.png")
         self.image = pygame.transform.scale(img, (tile_size, tile_size // 2))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -446,7 +442,7 @@ class Platform(pygame.sprite.Sprite):
 class Exit(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load("level 4 images/exit.png")
+        img = pygame.image.load("../level 4 images/exit.png")
         self.image = pygame.transform.scale(img, (tile_size, int(tile_size * 1.5)))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -456,7 +452,7 @@ base_enemyGroup = pygame.sprite.Group()
 class BaseEnemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("Preassets/img/blob.png")
+        self.image = pygame.image.load("../Preassets/img/blob.png")
         self.image = pygame.transform.scale(self.image,(self.image.get_width()//2,self.image.get_height()//2))
         self.rect = self.image.get_rect()
         self.rect.x = x

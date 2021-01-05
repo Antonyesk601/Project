@@ -44,7 +44,7 @@ screen.blit(bg, (0, 0))
 Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
 Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
 Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "tareklevel.run()"]
+Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "tareklevel.run(main_menu,game_over,world,score)"]
 Level5 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
 levels = SelectScreen(Level1, Level2, Level3, Level4, Level5, scale=1/2)
 startButton = Button(startPosX, startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2, "levels.draw(False)")
