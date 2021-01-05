@@ -107,7 +107,7 @@ player = definitions.Player(screen_width - 50, screen_height - 170)
 restart_button = definitions.TuTButton(screen_width // 2 - 50, screen_height // 2 + 100, restart_img)
 start_button = definitions.TuTButton(screen_width // 2 - 350, screen_height // 2, start_img)
 exit_button = definitions.TuTButton(screen_width // 2 + 150, screen_height // 2, exitbtn_img)
-def run(main_menu,game_over,world,score):
+def run(main_menu,game_over,world,score,level):
     # game loop
     run = True
     while run:
@@ -186,3 +186,4 @@ def run(main_menu,game_over,world,score):
         pygame.display.update()
 
     pygame.quit()
+run(main_menu,game_over,world,score,level)
