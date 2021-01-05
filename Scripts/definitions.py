@@ -3,19 +3,7 @@ from pygame import mixer
 from os import path
 import worldGridDraw as screeninfo
 import pickle
-import initialization as level1
-import tareklevel
-
-Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
-Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "tareklevel.run()"]
-Level5 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(fps,screeninfo,screen)"]
 tile_size = 50
-game_over = 0
-main_menu = True
-level = 4
-max_levels = 4
 score = 0
 clock=pygame.time.Clock()
 fps = 60
@@ -23,46 +11,40 @@ pygame.display.set_caption("Hi fucker")
 bg= pygame.Surface((screeninfo.screenWidth,screeninfo.screenHeight))
 bg.set_alpha(255)
 bg.fill((255,255,255))
-runs = True
 startPosX = screeninfo.screenWidth/2
 startPosY = screeninfo.screenHeight/2
 screen = pygame.display.set_mode([screeninfo.screenWidth, screeninfo.screenHeight])
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
 pygame.init()
-
-clock = pygame.time.Clock()
-fps = 60
-
+#
 screen_width = 1300
 screen_height = 750
-
-#define font
+#
+# #define font
 font = pygame.font.SysFont("Bauhaus 93", 70)
 font_score = pygame.font.SysFont("Bauhaus 93", 30)
 font_intro = pygame.font.SysFont("Matura MT Script Capitals", 60)
 font_intro2 = pygame.font.SysFont("Snap ITC", 55)
-
-#define colours
-white = (255,255,255)
-blue = (100,0,255)
-red = (255,0,0)
-moon_glow = ((235,245,255))
-
-# Screen
-screen = pygame.display.set_mode((screen_width,screen_height))
-pygame.display.set_caption("A wizard`s tale")
-
-# load images
+#
+# #define colours
+# white = (255,255,255)
+# blue = (100,0,255)
+# red = (255,0,0)
+# moon_glow = ((235,245,255))
+#
+# # Screen
+# screen = pygame.display.set_mode((screen_width,screen_height))
+# pygame.display.set_caption("A wizard`s tale")
+#
+# # load images
 bkg_img = pygame.image.load("level 4 images/level 4 intro.jpg")
 bkg = pygame.transform.scale(bkg_img, (screen_width,screen_height))
 bg_img = pygame.image.load("level 4 images/NightForest/Forestgrey.png") # Background
 bg = pygame.transform.scale(bg_img,(screen_width,screen_height)) #fix background scale
-restart_img = pygame.image.load("level 4 images/restart_btn.png")
-start_img = pygame.image.load("level 4 images/start_btn.png")
-exitbtn_img = pygame.image.load("level 4 images/exit_btn.png")
 
-#load sounds
+#
+# #load sounds
 pygame.mixer.music.load("level 4 sounds/level 4 original.mp3")
 pygame.mixer.music.play(-1, 0.0, 3000)
 pygame.mixer.music.set_volume(0.2)
@@ -107,39 +89,6 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x ,y))
 
-class SelectScreen():
-    def __init__(self,*button,scale):
-        self.scale=scale
-        self.buttonsnames = []
-        for i in range (0,len(button)):
-            self.buttonsnames.append(button[i])
-
-    def update(self):
-        for button in self.buttons:
-            button.update()
-    def draw(self,vertical,PosX=screeninfo.screenWidth,PosY=screeninfo.screenHeight):
-        global drawn
-        screen.blit(bg,(0,0))
-        counter=0
-        pygame.image.load(self.buttonsnames[0][0])
-        startposXDraw =PosX //2- (pygame.image.load(self.buttonsnames[0][0]).get_width() * len(self.buttonsnames) * self.scale) // 2
-        startposXDrawn = PosX // 2
-        startposYDraw = PosY // 2 - (pygame.image.load(self.buttonsnames[0][0]).get_height() * len(self.buttonsnames) * self.scale) // 2
-        startposYDrawn = PosY // 2
-        self.buttons=[]
-        if vertical:
-            for button in self.buttonsnames:
-                x=Button(startposXDrawn,startposYDraw+pygame.image.load(button[0]).get_height()*self.scale*counter+counter*50*self.scale,button[0],1/2,button[1])
-                self.buttons.append(x)
-                screen.blit(x.image, (x.posXN,x.posYN))
-                counter=counter+1
-        else:
-            for button in self.buttonsnames:
-                x=Button(startposXDraw+ pygame.image.load(button[0]).get_width() * counter*self.scale+counter*50*self.scale, startposYDrawn,button[0],1/2,button[1])
-                screen.blit(x.image, (x.posXN,x.posYN))
-                self.buttons.append(x)
-                counter=counter+1
-        drawn=True
 
 # Buttons
 class Button():
@@ -316,7 +265,7 @@ class Player():
         elif game_over == -1:
             pygame.mixer.music.stop()
             self.image = self.dead_image
-            draw_text("GAME OVER!", font, red, (screen_width // 2) - 180, screen_height // 2)
+            draw_text("GAME OVER!", font, (255,0,0), (screen_width // 2) - 180, screen_height // 2)
             if self.rect.y > 200:
                 self.rect.y -= 5
 
@@ -502,13 +451,6 @@ class Exit(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-
-levels = SelectScreen(Level1, Level2, Level3, Level4, Level5, scale=1/2)
-score_coin = Coin(tile_size // 2, tile_size // 2)
-coin_group.add(score_coin)
-restart_button = TuTButton(screen_width // 2 - 50, screen_height // 2 + 100, restart_img)
-start_button = TuTButton(screen_width // 2 - 350, screen_height // 2, start_img)
-exit_button = TuTButton(screen_width // 2 + 150, screen_height // 2, exitbtn_img)
 
 base_enemyGroup = pygame.sprite.Group()
 class BaseEnemy(pygame.sprite.Sprite):
