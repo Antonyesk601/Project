@@ -1,12 +1,9 @@
 import pickle
 from os import path  # to check whether the file exsists in the first place to avoid error
-
 import pygame
 from pygame import mixer
 from pygame.locals import *
-
 import definitions
-
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
 pygame.init()
@@ -14,22 +11,9 @@ pygame.init()
 clock = pygame.time.Clock()
 fps = 60
 
-screen_width = 1300
-screen_height = 750
-
-#define font
-font = pygame.font.SysFont("Bauhaus 93", 70)
-font_score = pygame.font.SysFont("Bauhaus 93", 30)
-font_intro = pygame.font.SysFont("Matura MT Script Capitals", 60)
-font_intro2 = pygame.font.SysFont("Snap ITC", 55)
-
-#define game variables
-tile_size = 50
-game_over = 0
 main_menu = True
 level = 4
-max_levels = 4
-score = 0
+score = definitions.score
 
 #define colours
 white = (255,255,255)
@@ -41,13 +25,6 @@ moon_glow = ((235,245,255))
 screen = definitions.screen
 
 # load images
-bkg_img = pygame.image.load("level 4 images/level 4 intro.jpg")
-bkg = pygame.transform.scale(bkg_img, (screen_width,screen_height))
-bg_img = pygame.image.load("level 4 images/NightForest/Forestgrey.png") # Background
-bg = pygame.transform.scale(bg_img,(screen_width,screen_height)) #fix background scale
-restart_img = pygame.image.load("level 4 images/restart_btn.png")
-start_img = pygame.image.load("level 4 images/start_btn.png")
-exitbtn_img = pygame.image.load("level 4 images/exit_btn.png")
 
 #load sounds
 pygame.mixer.music.load("level 4 sounds/level 4 original.mp3")
@@ -63,37 +40,13 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x ,y))
 
-#reset level funciton
-def reset_level(level,world_data):
-    #reset player position and destroy all entities
-    player.reset(screen_width - 50, screen_height - 170)
-    slime_group.empty()
-    platform_group.empty()
-    lava_group.empty()
-    exit_group.empty()
-
-    #load in level data and create world
-    if path.exists(f"level{level}_data"):
-        pickle_in = open(f"level{level}_data",
-                         "rb")  # open file and read binary to process whatever info is in this file
-        world_data = pickle.load(pickle_in)
-    world = definitions.World(world_data)  # (runs once outside game loop)
-
-    return world #take a receipt for game loop
-
-
-# Buttons
-
 slime_group = definitions.slime_group
-platform_group = definitions.platform_group
+platform_group =definitions.platform_group
 lava_group = definitions.lava_group
 coin_group = definitions.coin_group
 exit_group = definitions.exit_group
 
 #create dummy coin for showing the score
-score_coin =  definitions.Coin(tile_size // 2, tile_size // 2)
-coin_group.add(score_coin)
-
 
 
 #load in level data and create world
@@ -103,28 +56,28 @@ if path.exists(f"level{level}_data"):
 world =definitions.World(world_data) #(runs once outside game loop)
 
 #call player class with starting coordinates
-player = definitions.Player(screen_width - 50, screen_height - 170)
-
+resetpositions=[definitions.screen_width - 50, definitions.screen_height - 170]
+player = definitions.Player(resetpositions[0],resetpositions[1])
+score_coin= definitions.Coin(definitions.tile_size // 2, definitions.tile_size // 2)
 #create buttons
-restart_button = definitions.TuTButton(screen_width // 2 - 50, screen_height // 2 + 100, restart_img)
-start_button = definitions.TuTButton(screen_width // 2 - 350, screen_height // 2, start_img)
-exit_button = definitions.TuTButton(screen_width // 2 + 150, screen_height // 2, exitbtn_img)
-def run(main_menu,game_over,world,score,level,world_data):
+restart_button = definitions.TuTButton(definitions.screen_width // 2 - 50,definitions. screen_height // 2 + 100, definitions.tkrestart_img)
+start_button = definitions.TuTButton(definitions.screen_width // 2 - 350,definitions. screen_height // 2, definitions.tkstart_img)
+exit_button = definitions.TuTButton(definitions.screen_width // 2 + 150,definitions. screen_height // 2, definitions.tkexitbtn_img)
+def run(main_menu,game_over,world,score,level,world_data,resetpositions):
     # game loop
     run = True
+    scorepenalty = 0
+    definitions.currentlevel=level
+    coin_group.add(score_coin)
+    score=  definitions.score
     while run:
-        clock.tick(fps) #adjust framerate
-        # Drawing
-        screen.blit(bkg,(0,0)) # Background
-        draw_text("Level 4", font_intro2, blue, (screen_width // 2) - 80, 30)
-        draw_text("BOSS BATTLE", font_intro2, moon_glow, (screen_width // 2) - 200, screen_height - 200)
-        if main_menu == True:
-            if exit_button.draw():
-                run = False
-            if start_button.draw():
-                main_menu = False
-        else:
-            screen.blit(bg, (0, 0))
+            clock.tick(fps) #adjust framerate
+            # Drawing
+            screen.blit(definitions.tkbkg,(0,0)) # Background
+            draw_text("Level 4", definitions.font_intro2, blue, (definitions.screen_width // 2) - 80, 30)
+            draw_text("BOSS BATTLE",definitions. font_intro2, moon_glow, (definitions.screen_width // 2) - 200,definitions. screen_height - 200)
+
+            screen.blit(definitions.tkbg, (0, 0))
             world.draw()
 
             if game_over == 0:
@@ -136,7 +89,13 @@ def run(main_menu,game_over,world,score,level,world_data):
                 if coin_collision:
                     coin_fx.play()
                     score += 1
-                draw_text("X " + str(score), font_score, white, tile_size - 10, 10)
+                draw_text("X " + str(score),definitions. font_score, white,definitions. tile_size - 10, 10)
+                slime_group.draw(screen)
+                platform_group.draw(screen)
+                lava_group.draw(screen)
+                coin_group.draw(screen)
+                exit_group.draw(screen)
+            #elif game_over ==1:
 
             game_over = player.update(game_over,world)
 
@@ -147,22 +106,20 @@ def run(main_menu,game_over,world,score,level,world_data):
                 coin_collision = []
                 if restart_button.draw(): #used in if as it draws and returns true/false
                     #recreate the level to reload collected coins before death
-                    world = reset_level(level,world_data)
+                    world = definitions.reset_level(4,player,world_data,resetpositions)
                     game_over = 0
-                    score = 0
+                    scorepenalty-=1
+                    score =definitions.score+ scorepenalty
+                    coin_group.add(score_coin)
                     pygame.mixer.music.play(-1, 0.0, 3000)
+                    run=False
 
 
         #close event handler
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                run = False
-        slime_group.draw(screen)
-        platform_group.draw(screen)
-        lava_group.draw(screen)
-        coin_group.draw(screen)
-        exit_group.draw(screen)
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    run = False
+                    pygame.quit()
+            pygame.display.update()
+    score=  definitions.score
 
-        pygame.display.update()
-
-    pygame.quit()

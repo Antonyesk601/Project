@@ -3,6 +3,7 @@ import pygame
 import definitions
 import tareklevel
 import initialization as level1
+import mklevel
 pygame.init()
 # Buttons
 class Button():
@@ -16,11 +17,10 @@ class Button():
         self.rect.x = self.posXN
         self.rect.y = self.posYN
         self.function = function
-
     def update(self):
+
         if self.posXN+self.image.get_width()>pygame.mouse.get_pos()[0]>self.posXN:
             if self.posYN+self.image.get_height()>pygame.mouse.get_pos()[1]>self.posYN:
-                print("good lord")
                 s = pygame.Surface((self.rect.width, self.rect.height))  # the size of your rect
                 s.set_alpha(128)  # alpha level
                 s.fill((255, 255, 255))  # this fills the entire surface
@@ -68,18 +68,29 @@ definitions.screen.blit(definitions.bg, (0, 0))
 
 
 
-startButton = Button(definitions.startPosX, definitions.startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2, "levels.draw(False)")
-Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
-Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
-Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
-Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "tareklevel.run(tareklevel.main_menu,tareklevel.game_over,tareklevel.world,tareklevel.score,tareklevel.level,tareklevel.world_data)"]
-Level5 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,definitions.screen)"]
-levels = SelectScreen(Level1, Level2, Level3, Level4, Level5, scale=1/2)
+startButton = Button(definitions.startPosX, definitions.startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2,
+                     "levels.draw(False)")
+Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,"
+                                                        "definitions.screen)"]
+Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,"
+                                                        "definitions.screen)"]
+Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,mklevel.player,mklevel.world_data,"
+                                                        "mklevel.resetpositions),"
+                                                        "mklevel.run(definitions.game_over,mklevel.world,"
+                                                        "definitions.score,mklevel.level,mklevel.world_data,"
+                                                        "mklevel.resetpositions)"]
+Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(4,tareklevel.player,"
+                                                        "tareklevel.world_data,tareklevel.resetpositions),"
+                                                        "tareklevel.run(tareklevel.main_menu,"
+                                                        "definitions.game_over,tareklevel.world,definitions.score,"
+                                                        "tareklevel.level,tareklevel.world_data,"
+                                                        "tareklevel.resetpositions)"]
+levels = SelectScreen(Level1, Level2, Level3, Level4, scale=1/2)
 
 drawn=False
 runs=True
 while runs:
-    definitions.clock.tick(5)
+    definitions.clock.tick(10)
     definitions.screen.blit(definitions.bg, (0, 0))
     if not drawn:
         print(drawn)

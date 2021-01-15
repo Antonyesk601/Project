@@ -25,7 +25,7 @@ platform_group = definitions.platform_group
 lava_group = definitions.lava_group
 coin_group = definitions.coin_group
 exit_group = definitions.exit_group
-
+water_group= definitions.water_group
 def level1(fps,screeninfo,screen):
     run = True
     world = definitions.World(worldMap)

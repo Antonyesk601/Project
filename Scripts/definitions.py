@@ -1,7 +1,33 @@
 import pickle
 from os import path
 import pygame
+import worldGridDraw as screeninfo
 from gamemanager import *
+tile_size = 50
+fps = 60
+pygame.display.set_caption("Game")
+bg= pygame.Surface((screeninfo.screenWidth,screeninfo.screenHeight))
+bg.set_alpha(255)
+bg.fill((255,255,255))
+screen_width = 1300
+screen_height = 750
+font = pygame.font.SysFont("Bauhaus 93", 70)
+font_score = pygame.font.SysFont("Bauhaus 93", 30)
+font_intro = pygame.font.SysFont("Matura MT Script Capitals", 60)
+font_intro2 = pygame.font.SysFont("Snap ITC", 55)
+white = (255,255,255)
+blue = (100,0,255)
+red = (255,0,0)
+moon_glow = ((235,245,255))
+levelno=4
+tkbkg_img = pygame.image.load("level 4 images/level 4 intro.jpg")
+tkbkg = pygame.transform.scale(tkbkg_img, (screen_width,screen_height))
+tkbg_img = pygame.image.load("level 4 images/NightForest/Forestgrey.png") # Background
+tkbg = pygame.transform.scale(tkbg_img,(screen_width,screen_height)) #fix background scale
+tkrestart_img = pygame.image.load("level 4 images/restart_btn.png")
+tkstart_img = pygame.image.load("level 4 images/start_btn.png")
+tkexitbtn_img = pygame.image.load("level 4 images/exit_btn.png")
+
 class TuTButton():
     def __init__(self, x, y, image):
         self.image = image
@@ -133,12 +159,18 @@ class Player():
                 game_over = -1
                 pygame.mixer.music.stop()
                 game_over_fx.play()
+            if pygame.sprite.spritecollide(self, small_slime_group, False):
+                game_over = -1
+                pygame.mixer.music.stop()
+                game_over_fx.play()
 
             # check for collision with lava
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_over = -1
                 game_over_fx.play()
-
+            if pygame.sprite.spritecollide(self, water_group, False):
+                game_over = -1
+                game_over_fx.play()
             #check for collision with exit
             if pygame.sprite.spritecollide(self, exit_group, False):
                 pygame.mixer.music.stop()
@@ -187,7 +219,7 @@ class Player():
                 self.rect.y -= 5
 
         # draw player onto screen
-        screen.blit(self.image,self.rect)
+        screen.blit(self.image,(self.rect.x,self.rect.y))
         #display player hitbox
         #pygame.draw.rect(screen,(0,255,0),self.rect, 2)
 
@@ -218,7 +250,7 @@ class Player():
 
 # World data class
 class World():
-    def __init__(self,data): #constructor method takes the blueprint as an argument to process it
+    def __init__(self,data,enemysize=1): #constructor method takes the blueprint as an argument to process it
         self.tile_list = [] #empty list to collect useful data of the world after processing blueprint
         #load images
         dirt_img = pygame.image.load("level 4 images/dirt.png")
@@ -244,8 +276,11 @@ class World():
                     tile = (img, img_rect)  # tuple containing the image and its rectangle
                     self.tile_list.append(tile)  # adds the tile data to the tile list
                 if tile == 3: # Enemy
-                    slime = Enemy(col_count * tile_size, row_count * tile_size)
+                    slime = Enemy(col_count * tile_size, row_count * tile_size,enemysize)
                     slime_group.add(slime)
+                if tile == 11: # SmallEnemy
+                    slime = SmolEnemy(col_count * tile_size+31, 25+row_count * tile_size,enemysize)
+                    small_slime_group.add(slime)
                 if tile == 4: # Horizontal-moving platform
                     platform = Platform(col_count * tile_size, row_count * tile_size, 1, 0)
                     platform_group.add(platform)
@@ -268,6 +303,9 @@ class World():
                     img_rect.y = row_count * tile_size  # y position of rectangle increasing with each tile
                     tile = (img, img_rect)  # tuple containing the image and its rectangle
                     self.tile_list.append(tile)  # adds the tile data to the tile list
+                if tile == 10:
+                    water = Water(col_count * tile_size, row_count * tile_size + 25)
+                    water_group.add(water)
                 col_count += 1  #move rectangle onto the next tile (x-coordinate)
             row_count += 1  #move rectangle onto the next tile (y-coordinate)
 
@@ -277,12 +315,40 @@ class World():
             #display tile hitbox
             #pygame.draw.rect(screen,(255,255,255), tile[1], 2)
 
+class Water(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('mkmk/mkmk/Water.png')
+        self.image = pygame.transform.scale(self.image, (50, 28))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self,x,y):
+    def __init__(self,x,y,scale=1):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("level 4 images/SlimeOrange/slime0.png")
-        self.image = pygame.transform.scale(self.image,(62,50))
+        self.image = pygame.transform.scale(self.image,(int(62*scale),int(50*scale)))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.move_direction = 1
+        self.move_counter = 0
+
+    def update(self):
+        self.rect.x += self.move_direction
+        self.move_counter += 1
+        if abs(self.move_counter) > 50:
+            self.move_direction *= -1
+            self.move_counter *= -1
+
+
+class SmolEnemy(pygame.sprite.Sprite):
+    def __init__(self,x,y,scale=1):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("level 4 images/SlimeOrange/slime0.png")
+        self.image = pygame.transform.scale(self.image,(31,25))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -319,20 +385,23 @@ class Coin(pygame.sprite.Sprite):
 
 #reset level funciton
 #reset level funciton
-def reset_level(level,player):
+def reset_level(level,player,mapdata,resetpositions):
     #reset player position and destroy all entities
-    player.reset(screen_width - 50, screen_height - 170)
+    player.reset(resetpositions[0],resetpositions[1])
     slime_group.empty()
+    small_slime_group.empty()
     platform_group.empty()
     lava_group.empty()
     exit_group.empty()
-
+    water_group.empty()
+    coin_group.empty()
     #load in level data and create world
-    if path.exists(f"level{level}_data"):
-        pickle_in = open(f"level{level}_data",
-                         "rb")  # open file and read binary to process whatever info is in this file
-        world_data = pickle.load(pickle_in)
-    world = World(world_data)  # (runs once outside game loop)
+    if mapdata=="":
+        if path.exists(f"level{level}_data"):
+            pickle_in = open(f"level{level}_data",
+                             "rb")  # open file and read binary to process whatever info is in this file
+            mapdata = pickle.load(pickle_in)
+    world = World(mapdata)  # (runs once outside game loop)
 
     return world #take a receipt for game loop
 
@@ -369,7 +438,6 @@ class Exit(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-base_enemyGroup = pygame.sprite.Group()
 class BaseEnemy(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
