@@ -70,36 +70,38 @@ definitions.screen.blit(definitions.bg, (0, 0))
 
 
 
-startButton = Button(definitions.startPosX, definitions.startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2,
+startButton = Button(definitions.startPosX, definitions.startPosY,"level 4 images/start_btn.png", 1/2,
                      "levels.draw(False)")
-Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,lujainlevel.player,lujainlevel.world_data,"
+Level1 = ["level 4 images/start_btn.png", "definitions.reset_level(3,lujainlevel.player,lujainlevel.world_data,"
                                                         "lujainlevel.resetpositions),"
                                                         "lujainlevel.run(lujainlevel.game_over,lujainlevel.world,"
                                                         "definitions.score,lujainlevel.level,lujainlevel.world_data,"
                                                         "lujainlevel.resetpositions)"]
-Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,hossamlevel.player,hossamlevel.world_data,"
+Level2 = ["level 4 images/start_btn.png", "definitions.reset_level(3,hossamlevel.player,hossamlevel.world_data,"
                                                         "hossamlevel.resetpositions),"
                                                         "hossamlevel.run(hossamlevel.game_over,hossamlevel.world,"
                                                         "definitions.score,hossamlevel.level,hossamlevel.world_data,"
                                                         "hossamlevel.resetpositions)"]
-Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,mklevel.player,mklevel.world_data,"
+Level3 = ["level 4 images/start_btn.png", "definitions.reset_level(3,mklevel.player,mklevel.world_data,"
                                                         "mklevel.resetpositions),"
                                                         "mklevel.run(definitions.game_over,mklevel.world,"
                                                         "definitions.score,mklevel.level,mklevel.world_data,"
                                                         "mklevel.resetpositions)"]
-Level4 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(4,tareklevel.player,"
+Level4 = ["level 4 images/start_btn.png", "definitions.reset_level(4,tareklevel.player,"
                                                         "tareklevel.world_data,tareklevel.resetpositions),"
                                                         "tareklevel.run(tareklevel.main_menu,"
                                                         "definitions.game_over,tareklevel.world,definitions.score,"
                                                         "tareklevel.level,tareklevel.world_data,"
                                                         "tareklevel.resetpositions)"]
+exitbutton=Button(definitions.startPosX, definitions.startPosY, "level 4 images/exit_btn.png", 1/4,"run=False")
 levels = SelectScreen(Level1, Level2, Level3, Level4, scale=1/2)
+
 
 drawn=False
 runs=True
 while runs:
     definitions.clock.tick(5)
-    definitions.screen.blit(definitions.bg, (0, 0))
+
     if not drawn:
         print(drawn)
         definitions.screen.blit(startButton.image, (definitions.startPosX-startButton.image.get_width()/2,definitions.startPosY-startButton.image.get_height()/2))
@@ -110,9 +112,16 @@ while runs:
                     drawn=True
     else:
         levels.draw(False)
+        definitions.draw_text("Levels Done " + str(definitions.levelsfinished), definitions.font_intro2, (0, 0, 0), (definitions.screen_width // 2),
+                              0,False)
+        if definitions.levelsfinished==4:
+            definitions.draw_text("Congratulations", definitions.font_intro2, (0, 0, 0),
+                                  (definitions.screen_width // 2),
+                                  0,False)
         levels.update()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             runs = False
+
     pygame.display.update()
 pygame.quit()

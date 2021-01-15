@@ -2,8 +2,6 @@ import pygame
 
 import definitions
 
-vec = pygame.math.Vector2  # 2Dimensional
-
 # Load images
 bg_color = (135, 206, 235)
 
@@ -15,11 +13,11 @@ level = 3
 world_data = [
 
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8],
+    [0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8],
     [0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 2],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0],
     [9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -62,11 +60,13 @@ def run(game_over, world, score, level, world_data, resetpositions):
     score=  definitions.score
     scorepenalty=0
     while run:
+
         clock.tick(definitions.fps)  # adjust framerate
 
         screen.fill(bg_color)
         world.draw()
-
+        if definitions.exit_button.draw():
+            run = False
         if game_over == 0:
             slime_group.update()
             platform_group.update()
@@ -93,6 +93,8 @@ def run(game_over, world, score, level, world_data, resetpositions):
                 pygame.mixer.music.play(-1, 0.0, 3000)
                 coin_group.add(score_coin)
         elif game_over==1:
+            definitions.score = score
+            definitions.levelsfinished+=1
             run=False
         # close event handler
         for event in pygame.event.get():
@@ -106,4 +108,3 @@ def run(game_over, world, score, level, world_data, resetpositions):
         exit_group.draw(screen)
         water_group.draw(screen)
         pygame.display.update()
-    definitions.score= score

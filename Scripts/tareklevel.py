@@ -74,12 +74,11 @@ def run(main_menu,game_over,world,score,level,world_data,resetpositions):
             clock.tick(fps) #adjust framerate
             # Drawing
             screen.blit(definitions.tkbkg,(0,0)) # Background
-            draw_text("Level 4", definitions.font_intro2, blue, (definitions.screen_width // 2) - 80, 30)
-            draw_text("BOSS BATTLE",definitions. font_intro2, moon_glow, (definitions.screen_width // 2) - 200,definitions. screen_height - 200)
 
             screen.blit(definitions.tkbg, (0, 0))
             world.draw()
-
+            if definitions.exit_button.draw():
+                run = False
             if game_over == 0:
                 slime_group.update()
                 platform_group.update()
@@ -95,12 +94,11 @@ def run(main_menu,game_over,world,score,level,world_data,resetpositions):
                 lava_group.draw(screen)
                 coin_group.draw(screen)
                 exit_group.draw(screen)
-            #elif game_over ==1:
-
+            elif game_over ==1:
+                score = definitions.score
+                definitions.levelsfinished += 1
+                run =False
             game_over = player.update(game_over,world)
-
-
-
             #if player has died
             if game_over == -1:
                 coin_collision = []
@@ -121,5 +119,4 @@ def run(main_menu,game_over,world,score,level,world_data,resetpositions):
                     run = False
                     pygame.quit()
             pygame.display.update()
-    score=  definitions.score
 

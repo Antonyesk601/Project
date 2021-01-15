@@ -20,7 +20,7 @@ coin_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
 # #define font
 
-
+levelsfinished=0
 #
 currentlevel=0
 # #load sounds

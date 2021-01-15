@@ -29,8 +29,9 @@ tkstart_img = pygame.image.load("level 4 images/start_btn.png")
 tkexitbtn_img = pygame.image.load("level 4 images/exit_btn.png")
 
 class TuTButton():
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, image,scale=1):
         self.image = image
+        self.image= pygame.transform.scale(self.image,(int(self.image.get_width()*scale),int(self.image.get_height()*scale)))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -55,9 +56,12 @@ class TuTButton():
         screen.blit(self.image, self.rect)
 
         return action
-def draw_text(text, font, text_col, x, y):
+def draw_text(text, font, text_col, x, y,exact=True):
     img = font.render(text, True, text_col)
-    screen.blit(img, (x ,y))
+    if exact:
+        screen.blit(img, (x,y))
+    else:
+        screen.blit(img, (x-img.get_width()//2 ,y+img.get_height()//2))
 
 
 
@@ -371,7 +375,6 @@ class SmolEnemy(pygame.sprite.Sprite):
             self.move_counter *= -1
 
 
-
 class Lava(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -395,6 +398,10 @@ class Coin(pygame.sprite.Sprite):
 #reset level funciton
 def reset_level(level,player,mapdata,resetpositions):
     #reset player position and destroy all entities
+    pygame.mixer.stop()
+    pygame.mixer.music.load("level 4 sounds/level 4 original.mp3")
+    pygame.mixer.music.play(-1, 0.0, 3000)
+    pygame.mixer.music.set_volume(0.2)
     player.reset(resetpositions[0],resetpositions[1])
     slime_group.empty()
     small_slime_group.empty()
@@ -463,3 +470,4 @@ class BaseEnemy(pygame.sprite.Sprite):
 
             self.movespeed*=-1
             self.moveCounter*=-1
+exit_button = TuTButton(screen_width - tkexitbtn_img.get_width()//2, tkexitbtn_img.get_height()//2, tkexitbtn_img,1/4)
