@@ -306,6 +306,14 @@ class World():
                 if tile == 10:
                     water = Water(col_count * tile_size, row_count * tile_size + 25)
                     water_group.add(water)
+                if tile == 12: # Brick
+                    img = pygame.surface.Surface((tile_size, tile_size))  # fix scale of image to tile size
+                    img.set_alpha(0)
+                    img_rect = img.get_rect()  # get rectangle of image which is now tile sized
+                    img_rect.x = col_count * tile_size  # x position of rectangle increasing with each tile
+                    img_rect.y = row_count * tile_size  # y position of rectangle increasing with each tile
+                    tile = (img, img_rect)  # tuple containing the image and its rectangle
+                    self.tile_list.append(tile)  # adds the tile data to the tile list
                 col_count += 1  #move rectangle onto the next tile (x-coordinate)
             row_count += 1  #move rectangle onto the next tile (y-coordinate)
 

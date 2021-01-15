@@ -4,6 +4,8 @@ import definitions
 import tareklevel
 import initialization as level1
 import mklevel
+import hossamlevel
+import lujainlevel
 pygame.init()
 # Buttons
 class Button():
@@ -70,10 +72,16 @@ definitions.screen.blit(definitions.bg, (0, 0))
 
 startButton = Button(definitions.startPosX, definitions.startPosY,"D:\\Project\\Preassets\\img\\start_btn.png", 1/2,
                      "levels.draw(False)")
-Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,"
-                                                        "definitions.screen)"]
-Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "level1.level1(definitions.fps,definitions.screeninfo,"
-                                                        "definitions.screen)"]
+Level1 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,lujainlevel.player,lujainlevel.world_data,"
+                                                        "lujainlevel.resetpositions),"
+                                                        "lujainlevel.run(lujainlevel.game_over,lujainlevel.world,"
+                                                        "definitions.score,lujainlevel.level,lujainlevel.world_data,"
+                                                        "lujainlevel.resetpositions)"]
+Level2 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,hossamlevel.player,hossamlevel.world_data,"
+                                                        "hossamlevel.resetpositions),"
+                                                        "hossamlevel.run(hossamlevel.game_over,hossamlevel.world,"
+                                                        "definitions.score,hossamlevel.level,hossamlevel.world_data,"
+                                                        "hossamlevel.resetpositions)"]
 Level3 = ["D:\\Project\\Preassets\\img\\start_btn.png", "definitions.reset_level(3,mklevel.player,mklevel.world_data,"
                                                         "mklevel.resetpositions),"
                                                         "mklevel.run(definitions.game_over,mklevel.world,"
@@ -90,7 +98,7 @@ levels = SelectScreen(Level1, Level2, Level3, Level4, scale=1/2)
 drawn=False
 runs=True
 while runs:
-    definitions.clock.tick(10)
+    definitions.clock.tick(5)
     definitions.screen.blit(definitions.bg, (0, 0))
     if not drawn:
         print(drawn)
