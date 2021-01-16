@@ -110,7 +110,6 @@ def run(main_menu,game_over,world,score,level,world_data,resetpositions):
                     score =definitions.score+ scorepenalty
                     coin_group.add(score_coin)
                     pygame.mixer.music.play(-1, 0.0, 3000)
-                    run=False
 
 
         #close event handler
