@@ -13,20 +13,23 @@ screen = definitions.screen
 clock = pygame.time.Clock()
 level = 3
 world_data = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 2, 2, 2, 2, 1],
-    [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 2, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 2, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 2, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0, 0, 2, 2, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 1],
-    [1, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 2, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1],
-    [1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1]
+    [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 8, 1],
+    [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 13, 2, 2, 2, 2, 1],
+    [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 2, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 7, 0, 0, 0, 7, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 2, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1],
+    [1, 0, 0, 0, 7, 0, 0, 2, 1, 1, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1],
+    [1, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 7, 1],
+    [1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 1]
 ]
+
 score_coin =  definitions.Coin(definitions.tile_size // 2, definitions.tile_size // 2)
 
 slime_group = definitions.small_slime_group
@@ -37,6 +40,7 @@ exit_group = definitions.exit_group
 score_coin = definitions.Coin(tile_size // 2, tile_size // 2)
 coin_group.add(score_coin)
 water_group = definitions.water_group
+snake_group=definitions.snake_group
 world = definitions.World(world_data)  # (runs once outside game loop)
 # call player class with starting coordinates
 resetpositions = [100, definitions.screen_height - 175]
@@ -54,7 +58,7 @@ exit_button = definitions.TuTButton(definitions.screen_width // 2 + 150, definit
 def run(game_over, world, score, level, world_data, resetpositions):
     # game loop
     run = True
-    bg_color = (135, 206, 235)
+    bg_color = pygame.image.load("Hossam\'s level/last.png")
     coin_group.add(score_coin)
     score=  definitions.score
     scorepenalty=0
@@ -62,10 +66,9 @@ def run(game_over, world, score, level, world_data, resetpositions):
 
         clock.tick(definitions.fps)  # adjust framerate
 
-        screen.fill(bg_color)
+        screen.blit(bg_color,(0,0))
         world.draw()
-        if definitions.exit_button.draw():
-            run = False
+
         if game_over == 0:
             slime_group.update()
             platform_group.update()
@@ -106,4 +109,7 @@ def run(game_over, world, score, level, world_data, resetpositions):
         coin_group.draw(screen)
         exit_group.draw(screen)
         water_group.draw(screen)
+        snake_group.draw(screen)
+        if definitions.exit_button.draw():
+            run = False
         pygame.display.update()

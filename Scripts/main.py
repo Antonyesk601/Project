@@ -2,7 +2,6 @@ import pygame
 
 import definitions
 import tareklevel
-import initialization as level1
 import mklevel
 import hossamlevel
 import lujainlevel
@@ -103,7 +102,6 @@ while runs:
     definitions.clock.tick(5)
 
     if not drawn:
-        print(drawn)
         definitions.screen.blit(startButton.image, (definitions.startPosX-startButton.image.get_width()/2,definitions.startPosY-startButton.image.get_height()/2))
         startButton.update()
         if startButton.posXN + startButton.image.get_width() > pygame.mouse.get_pos()[0] > startButton.posXN:

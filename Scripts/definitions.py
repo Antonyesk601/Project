@@ -167,7 +167,8 @@ class Player():
                 game_over = -1
                 pygame.mixer.music.stop()
                 game_over_fx.play()
-
+            if pygame.sprite.spritecollide(self, snake_group, False):
+                game_over = -1
             # check for collision with lava
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_over = -1
@@ -318,6 +319,9 @@ class World():
                     img_rect.y = row_count * tile_size  # y position of rectangle increasing with each tile
                     tile = (img, img_rect)  # tuple containing the image and its rectangle
                     self.tile_list.append(tile)  # adds the tile data to the tile list
+                if tile == 13:
+                    snake = Snakes(col_count * tile_size, row_count * tile_size + 20)
+                    snake_group.add(snake)
                 col_count += 1  #move rectangle onto the next tile (x-coordinate)
             row_count += 1  #move rectangle onto the next tile (y-coordinate)
 
@@ -326,6 +330,13 @@ class World():
             screen.blit(tile[0],tile[1]) #takes the image and puts it in its rectangle coordinates
             #display tile hitbox
             #pygame.draw.rect(screen,(255,255,255), tile[1], 2)
+class Snakes(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('Hossam\'s level/Icons_37.png')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 class Water(pygame.sprite.Sprite):
     def __init__(self, x, y):
