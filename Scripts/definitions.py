@@ -162,20 +162,26 @@ class Player():
             if pygame.sprite.spritecollide(self, slime_group, False):
                 game_over = -1
                 pygame.mixer.music.stop()
+                print("1")
                 game_over_fx.play()
             if pygame.sprite.spritecollide(self, small_slime_group, False):
                 game_over = -1
                 pygame.mixer.music.stop()
                 game_over_fx.play()
+                print("2")
             if pygame.sprite.spritecollide(self, snake_group, False):
                 game_over = -1
+                game_over_fx.play()
+                print("3")
             # check for collision with lava
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_over = -1
                 game_over_fx.play()
+                print("4")
             if pygame.sprite.spritecollide(self, water_group, False):
                 game_over = -1
                 game_over_fx.play()
+                print("5")
             #check for collision with exit
             if pygame.sprite.spritecollide(self, exit_group, False):
                 pygame.mixer.music.stop()
@@ -337,7 +343,6 @@ class Snakes(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-
 class Water(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -415,6 +420,7 @@ def reset_level(level,player,mapdata,resetpositions):
     pygame.mixer.music.set_volume(0.2)
     player.reset(resetpositions[0],resetpositions[1])
     slime_group.empty()
+    snake_group.empty()
     small_slime_group.empty()
     platform_group.empty()
     lava_group.empty()
