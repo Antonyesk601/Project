@@ -1,3 +1,4 @@
+
 import pygame
 
 import definitions
@@ -54,12 +55,14 @@ class SelectScreen():
         if vertical:
             for button in self.buttonsnames:
                 x=Button(startposXDrawn,startposYDraw+pygame.image.load(button[0]).get_height()*self.scale*counter+counter*50*self.scale,button[0],1/2,button[1])
+                y= definitions.draw_text(str(counter+1),definitions.font_intro2,(0,0,0),startposXDrawn,startposYDraw+pygame.image.load(button[0]).get_height()*self.scale*counter+counter*50*self.scale)
                 self.buttons.append(x)
                 definitions.screen.blit(x.image, (x.posXN,x.posYN))
                 counter=counter+1
         else:
             for button in self.buttonsnames:
                 x=Button(startposXDraw+ pygame.image.load(button[0]).get_width() * counter*self.scale+counter*50*self.scale, startposYDrawn,button[0],1/2,button[1])
+                y= definitions.draw_text(str(counter+1),definitions.font_intro2,(0,0,0),startposXDraw+ pygame.image.load(button[0]).get_width() * counter*self.scale+counter*50*self.scale, startposYDrawn+pygame.image.load(button[0]).get_height()//2 )
                 definitions.screen.blit(x.image, (x.posXN,x.posYN))
                 self.buttons.append(x)
                 counter=counter+1

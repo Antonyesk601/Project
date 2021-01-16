@@ -69,24 +69,6 @@ def draw_text(text, font, text_col, x, y,exact=True):
 class Player():
     def __init__(self, x, y):   #takes x,y coordinates of player as arguments
         self.reset(x, y)
-    def animate(self, dx, dy):
-        animation_cooldown=15
-        if self.counter>=animation_cooldown:
-            self.counter=0
-            if dx > 0:
-                self.index += 1
-                if self.index >= len(self.imagesright):
-                    self.index = 0
-                self.image = self.imagesright[self.index]
-            elif dx < 0:
-                self.index += 1
-                if self.index >= len(self.imagesleft):
-                    self.index = 0
-                self.image = self.imagesleft[self.index]
-        if self.left and dx == 0:
-            self.image = self.imagesleft[0]
-        elif (not self.left) and dx == 0:
-            self.image = self.imagesright[0]
 
     def update(self, game_over,world): #what is actually called through game loop
         #calculate new player pos > check collision at new pos > adjust player pos
