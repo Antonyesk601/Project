@@ -1,6 +1,4 @@
-
 import pygame
-
 import definitions
 import tareklevel
 import mklevel
@@ -116,6 +114,7 @@ while runs:
         definitions.draw_text("Levels Done " + str(definitions.levelsfinished), definitions.font_intro2, (0, 0, 0), (definitions.screen_width // 2),
                               0,False)
         if definitions.levelsfinished==4:
+            definitions.screen.blit(definitions.bg,(0,0))
             definitions.draw_text("Congratulations", definitions.font_intro2, (0, 0, 0),
                                   (definitions.screen_width // 2),
                                   0,False)
